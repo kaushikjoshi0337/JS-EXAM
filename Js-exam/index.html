@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Manager</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #142035;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      width: 400px;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, .1);
+      background-image: url("https://static.vecteezy.com/system/resources/thumbnails/015/649/139/small/abstract-fingerprint-scanning-encryption-to-login-cyber-security-icons-on-blue-background-modern-futuristic-vector.jpg");
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    input {
+      width: 80%;
+      padding: 8px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+    }
+
+    .task-manager{
+      text-align: center;
+      font-size: 42px;
+      color: whitesmoke;
+      margin-bottom: 55px;
+    }
+
+    button {
+      padding: 15px 30px;
+      border: none;
+      font-size: 18px;
+      background: #28a745;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+  
+    }
+
+    button:hover {
+      background: #218838;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      background: #f8f9fa;
+      padding: 8px;
+      margin: 5px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 5px;
+    }
+
+    .btn{
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin-top: 30px;
+    }
+
+    .input-data{
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    li button {
+      padding: 5px;
+      margin-left: 5px;
+      cursor: pointer;
+    }
+
+    .edit {
+      background: #ffc107;
+    }
+
+    .delete {
+      background: #dc3545;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    
+  <p class="task-manager">Task Manager</p>
+   <div class="input-data"> <input type="text" id="taskInput" placeholder="Enter task" /></div>
+    <div class="btn">
+      <button onclick="addTask()">Add Task</button>
+    </div>
+    <ul id="taskList"></ul>
+  </div>
+  <script>
+    const loadTasks = () => {
+      const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+      document.getElementById('taskList').innerHTML = tasks.map((task, i) => `
+        <li>
+          <span>${task}</span>
+          <div>
+            <button class="edit" onclick="editTask(${i})">Edit</button>
+            <button class="delete" onclick="deleteTask(${i})">Delete</button>
+          </div>
+        </li>
+      `).join('');
+    };
+
+    const addTask = () => {
+      const taskInput = document.getElementById('taskInput');
+      if (taskInput.value.trim()) {
+        const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+        tasks.push(taskInput.value.trim());
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+        taskInput.value = '';
+        loadTasks();
+      }
+    };
+
+    const editTask = (i) => {
+      const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+      const newTask = prompt('Edit your task:', tasks[i]);
+      if (newTask) {
+        tasks[i] = newTask;
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+        loadTasks();
+      }
+    };
+
+    const deleteTask = (i) => {
+      const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+      tasks.splice(i, 1);
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+      loadTasks();
+    };
+
+    loadTasks();
+  </script>
+</body>
+
+</html>
